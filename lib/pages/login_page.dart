@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double? _widthDevice, _heightDevice;
 
-  final GlobalKey _loginKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
 
   String? _emailInput;
   String? _passwordInput;
@@ -29,7 +29,12 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [_titleWidget(), _loginForm(), _submitWidgetButton()],
+              children: [
+                _titleWidget(),
+                _loginForm(),
+                _submitWidgetButton(),
+                _signupTextLink(),
+              ],
             ),
           ),
         ),
@@ -75,12 +80,13 @@ class _LoginPageState extends State<LoginPage> {
         }
         return null;
       },
-      decoration: InputDecoration(hint: Text("Email")),
+      decoration: InputDecoration(hintText: "Email"),
     );
   }
 
   Widget _passwordField() {
     return TextFormField(
+      obscureText: true,
       onSaved: (value) {
         setState(() {
           _passwordInput = value;
@@ -89,13 +95,13 @@ class _LoginPageState extends State<LoginPage> {
       validator: (value) => value!.length > 6
           ? null
           : "Please enter password greater than 6 character",
-      decoration: InputDecoration(hint: Text("Password")),
+      decoration: InputDecoration(hintText: "Password"),
     );
   }
 
   Widget _submitWidgetButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: _loginUser,
       minWidth: _widthDevice! * 0.70,
       height: _heightDevice! * 0.07,
       color: Colors.blueGrey[900],
@@ -104,5 +110,25 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(fontSize: 18, color: Colors.blueGrey[100]),
       ),
     );
+  }
+
+  Widget _signupTextLink() {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, 'register'),
+      child: Text(
+        "Don't have an account?",
+        style: TextStyle(
+          color: Colors.blue,
+          fontSize: 14,
+          fontWeight: FontWeight.w200,
+        ),
+      ),
+    );
+  }
+
+  void _loginUser() {
+    if (_loginKey.currentState!.validate()) {
+      _loginKey.currentState!.save();
+    }
   }
 }
