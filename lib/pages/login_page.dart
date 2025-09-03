@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() {
     return _LoginPageState();
@@ -50,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginForm() {
-    return Container(
+    return SizedBox(
       height: _heightDevice! * 0.20,
       child: Form(
         key: _loginKey,
