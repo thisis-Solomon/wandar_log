@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, 'register'),
       child: Text(
-        "Don't have an account?",
+        "Don't have an account? Register",
         style: TextStyle(
           color: Colors.blue,
           fontSize: 14,
