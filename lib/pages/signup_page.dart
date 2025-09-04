@@ -14,8 +14,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _registerFormKey = GlobalKey<FormState>();
 
   String? _emailInput;
-  String? _firstPasswordInput;
-  String? _confirmPasswordInput;
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 _titleWidget(),
                 _registerFormWidget(),
-                _registeButton(),
+                _registerButton(),
                 _loginTextLink(),
               ],
             ),
@@ -81,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         bool results = value!.contains(
-          RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'),
+          RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'),
         );
         if (!results) {
           return "Please enter a valid email address";
@@ -93,34 +94,26 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _textPasswordFormField() {
     return TextFormField(
-      onSaved: (value) {
-        setState(() {
-          _firstPasswordInput = value;
-        });
-      },
+      controller: _passwordController,
       decoration: InputDecoration(hintText: "Password"),
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) => value!.length > 6
+      obscureText: true,
+      validator: (value) => value != null && value.length >= 6
           ? null
-          : "Please enter password greater than 6 character",
+          : "Password must be at least 6 characters",
     );
   }
 
   Widget _confirmPasswordFormField() {
     return TextFormField(
-      onSaved: (value) {
-        setState(() {
-          _confirmPasswordInput = value;
-        });
-      },
+      controller: _confirmPasswordController,
       decoration: InputDecoration(hintText: "Confirm Password"),
-      keyboardType: TextInputType.emailAddress,
+      obscureText: true,
       validator: (value) =>
-          value! == _firstPasswordInput ? null : "Password does not match",
+          value == _passwordController.text ? null : "Passwords do not match",
     );
   }
 
-  _registeButton() {
+  _registerButton() {
     return MaterialButton(
       onPressed: () {
         if (_registerFormKey.currentState!.validate()) {
